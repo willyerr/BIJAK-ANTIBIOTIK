@@ -1,0 +1,1414 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bijak Antibiotik - Cegah Resistensi Antimikroba (AMR)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter & Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome untuk Ikon Medis -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        medical: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            900: '#0c4a6e',
+                        },
+                        tealmed: {
+                            50: '#f0fdfa',
+                            100: '#ccfbf1',
+                            500: '#14b8a6',
+                            600: '#0d9488',
+                            700: '#0f766e',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Kustomisasi Animasi & Efek Visual */
+        @keyframes pulseSlow {
+            0%, 100% { transform: scale(1); opacity: 0.9; }
+            50% { transform: scale(1.05); opacity: 1; }
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
+        .animate-float {
+            animation: float 4s ease-in-out infinite;
+        }
+        .animate-pulse-slow {
+            animation: pulseSlow 3s ease-in-out infinite;
+        }
+        
+        /* Flip Card Utility untuk Mitos vs Fakta */
+        .perspective-1000 {
+            perspective: 1000px;
+        }
+        .transform-style-3d {
+            transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .backface-hidden {
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+        }
+        .rotate-y-180 {
+            transform: rotateY(180deg);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #94a3b8;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #0284c7;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased selection:bg-tealmed-500 selection:text-white">
+
+    <!-- ==================== NAVBAR RESPONSIF ==================== -->
+    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16 md:h-20">
+                <!-- Logo -->
+                <a href="#" class="flex items-center gap-3 group">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-medical-600 to-tealmed-500 flex items-center justify-center text-white shadow-md group-hover:scale-105 transition-transform">
+                        <i class="fa-solid fa-capsules text-lg"></i>
+                    </div>
+                    <div>
+                        <span class="font-display font-bold text-lg md:text-xl text-slate-900 tracking-tight block leading-none">Bijak<span class="text-medical-600">Antibiotik</span></span>
+                        <span class="text-[11px] font-medium text-tealmed-600 tracking-wider uppercase">Edukasi Cegah AMR</span>
+                    </div>
+                </a>
+
+                <!-- Desktop Menu -->
+                <nav class="hidden md:flex items-center gap-6 lg:gap-8 text-sm font-medium text-slate-600">
+                    <a href="#apa-itu-amr" class="hover:text-medical-600 transition-colors">Apa itu AMR?</a>
+                    <a href="#aturan-emas" class="hover:text-medical-600 transition-colors">5 Aturan Emas</a>
+                    <a href="#mitos-fakta" class="hover:text-medical-600 transition-colors">Mitos vs Fakta</a>
+                    <a href="#jadwal-obat" class="hover:text-medical-600 transition-colors">Kalkulator Jadwal</a>
+                    <a href="#kuis-amr" class="px-4 py-2.5 rounded-xl bg-medical-600 text-white font-semibold hover:bg-medical-700 transition-all shadow-sm hover:shadow">
+                        <i class="fa-solid fa-award mr-1.5"></i>Uji Pemahaman
+                    </a>
+                </nav>
+
+                <!-- Mobile Hamburger Button -->
+                <button id="mobile-menu-btn" aria-label="Buka Menu" class="md:hidden p-2.5 rounded-xl text-slate-600 hover:bg-slate-100 focus:outline-none">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-slate-200 px-4 pt-2 pb-5 space-y-2 shadow-lg">
+            <a href="#apa-itu-amr" class="mobile-link block px-4 py-3 rounded-xl text-slate-700 font-medium hover:bg-medical-50 hover:text-medical-600">1. Apa itu AMR?</a>
+            <a href="#aturan-emas" class="mobile-link block px-4 py-3 rounded-xl text-slate-700 font-medium hover:bg-medical-50 hover:text-medical-600">2. 5 Aturan Emas</a>
+            <a href="#mitos-fakta" class="mobile-link block px-4 py-3 rounded-xl text-slate-700 font-medium hover:bg-medical-50 hover:text-medical-600">3. Cek Mitos vs Fakta</a>
+            <a href="#jadwal-obat" class="mobile-link block px-4 py-3 rounded-xl text-slate-700 font-medium hover:bg-medical-50 hover:text-medical-600">4. Kalkulator Jadwal Obat</a>
+            <a href="#kuis-amr" class="mobile-link block px-4 py-3 rounded-xl bg-medical-600 text-white font-semibold text-center mt-2">Mulai Kuis & Sertifikat</a>
+        </div>
+    </header>
+
+    <!-- ==================== 1. HERO SECTION ==================== -->
+    <section class="relative overflow-hidden bg-gradient-to-br from-medical-50 via-white to-tealmed-50 pt-10 pb-16 md:py-24 border-b border-slate-200/70">
+        <!-- Dekorasi Background Blur -->
+        <div class="absolute -top-24 -right-24 w-96 h-96 bg-tealmed-200/30 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute bottom-0 -left-24 w-80 h-80 bg-medical-200/30 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+                
+                <!-- Kolom Teks Hero -->
+                <div class="lg:col-span-7 text-center lg:text-left">
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-red-50 border border-red-200 text-red-700 text-xs sm:text-sm font-semibold mb-6">
+                        <span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
+                        Ancaman Kesehatan Global: Silent Pandemic
+                    </div>
+                    <h1 class="font-display font-extrabold text-3xl sm:text-4xl lg:text-5xl text-slate-900 leading-tight mb-6">
+                        Jangan Biarkan Bakteri Menjadi <span class="text-transparent bg-clip-text bg-gradient-to-r from-medical-600 to-tealmed-600">Kebal Obat!</span>
+                    </h1>
+                    <p class="text-base sm:text-lg text-slate-600 leading-relaxed mb-8 max-w-2xl mx-auto lg:mx-0">
+                        Penggunaan antibiotik yang sembarangan memicu <strong>Resistensi Antimikroba (AMR)</strong>—kondisi saat infeksi biasa menjadi sulit atau bahkan mustahil disembuhkan. Pelajari cara melindungi diri dan keluarga Anda sekarang.
+                    </p>
+                    
+                    <!-- Tombol CTA -->
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                        <a href="#apa-itu-amr" class="px-6 py-4 rounded-2xl bg-medical-600 hover:bg-medical-700 text-white font-semibold text-base shadow-lg shadow-medical-600/25 transition-all flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-book-medical"></i>
+                            Mulai Modul Edukasi
+                        </a>
+                        <a href="#kuis-amr" class="px-6 py-4 rounded-2xl bg-white hover:bg-tealmed-50 text-tealmed-700 border-2 border-tealmed-500 font-semibold text-base transition-all flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-clipboard-check"></i>
+                            Ikuti Kuis Interaktif
+                        </a>
+                    </div>
+
+                    <!-- Statistik Singkat WHO -->
+                    <div class="grid grid-cols-3 gap-4 mt-10 pt-8 border-t border-slate-200/80 max-w-xl mx-auto lg:mx-0">
+                        <div>
+                            <p class="font-display font-extrabold text-xl sm:text-2xl text-medical-700">1,27 Juta+</p>
+                            <p class="text-xs text-slate-500 mt-0.5">Kematian langsung per tahun akibat AMR (WHO)</p>
+                        </div>
+                        <div>
+                            <p class="font-display font-extrabold text-xl sm:text-2xl text-tealmed-600">0%</p>
+                            <p class="text-xs text-slate-500 mt-0.5">Efektivitas antibiotik untuk melawan virus flu</p>
+                        </div>
+                        <div>
+                            <p class="font-display font-extrabold text-xl sm:text-2xl text-amber-600">5 Prinsip</p>
+                            <p class="text-xs text-slate-500 mt-0.5">Langkah bijak menyelamatkan masa depan medis</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Kolom Ilustrasi SVG Interaktif Hero -->
+                <div class="lg:col-span-5 flex justify-center">
+                    <div class="relative w-full max-w-md bg-white p-6 sm:p-8 rounded-3xl shadow-xl border border-slate-100 animate-float">
+                        <!-- SVG Visual Perisai Medis & Kapsul -->
+                        <svg viewBox="0 0 360 300" class="w-full h-auto" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="shieldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#0284c7" />
+                                    <stop offset="100%" stop-color="#0d9488" />
+                                </linearGradient>
+                                <linearGradient id="pillGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <stop offset="0%" stop-color="#38bdf8" />
+                                    <stop offset="50%" stop-color="#0284c7" />
+                                    <stop offset="50%" stop-color="#f8fafc" />
+                                    <stop offset="100%" stop-color="#e2e8f0" />
+                                </linearGradient>
+                            </defs>
+                            <!-- Lingkaran Latar -->
+                            <circle cx="180" cy="150" r="120" fill="#f0f9ff" />
+                            <circle cx="180" cy="150" r="95" fill="#ccfbf1" opacity="0.5" />
+                            
+                            <!-- Perisai Perlindungan -->
+                            <path d="M180 45 L265 80 V145 C265 202 228 248 180 265 C132 248 95 202 95 145 V80 L180 45 Z" fill="url(#shieldGrad)" opacity="0.95"/>
+                            <path d="M180 58 L252 88 V145 C252 194 220 234 180 250 C140 234 108 194 108 145 V88 L180 58 Z" fill="none" stroke="#ffffff" stroke-width="2" opacity="0.4"/>
+                            
+                            <!-- Ikon Kapsul di Tengah Perisai -->
+                            <g transform="translate(180, 150) rotate(-35)">
+                                <rect x="-52" y="-22" width="104" height="44" rx="22" fill="url(#pillGrad)" stroke="#0f172a" stroke-width="2.5"/>
+                                <line x1="0" y1="-22" x2="0" y2="22" stroke="#0f172a" stroke-width="2"/>
+                                <path d="M-38 -10 H-12" stroke="#ffffff" stroke-width="4" stroke-linecap="round" opacity="0.7"/>
+                            </g>
+
+                            <!-- Bakteri Terblokir di Luar Perisai -->
+                            <g transform="translate(65, 95)">
+                                <circle cx="0" cy="0" r="18" fill="#fca5a5" stroke="#ef4444" stroke-width="2"/>
+                                <circle cx="-6" cy="-4" r="2.5" fill="#7f1d1d"/>
+                                <circle cx="6" cy="-4" r="2.5" fill="#7f1d1d"/>
+                                <path d="M-5 6 Q0 2 5 6" stroke="#7f1d1d" stroke-width="2" fill="none"/>
+                                <line x1="-22" y1="0" x2="-18" y2="0" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/>
+                                <line x1="18" y1="0" x2="22" y2="0" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/>
+                                <line x1="0" y1="-22" x2="0" y2="-18" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/>
+                                <line x1="0" y1="18" x2="0" y2="22" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/>
+                            </g>
+                            
+                            <!-- Tanda Centang Proteksi -->
+                            <circle cx="255" cy="215" r="24" fill="#10b981" stroke="#ffffff" stroke-width="4"/>
+                            <path d="M245 215 L252 222 L266 208" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <div class="text-center mt-2">
+                            <span class="inline-block px-3 py-1 bg-tealmed-50 text-tealmed-700 text-xs font-bold rounded-lg">
+                                Antibiotik = Hanya untuk Infeksi Bakteri
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== 2. APA ITU RESISTENSI ANTIMIKROBA (AMR)? ==================== -->
+    <section id="apa-itu-amr" class="py-16 md:py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-14">
+                <span class="text-tealmed-600 font-bold text-sm uppercase tracking-wider">Modul 01 • Dasar Medis</span>
+                <h2 class="font-display font-bold text-2xl sm:text-3xl md:text-4xl text-slate-900 mt-2 mb-4">
+                    Memahami Virus, Bakteri, dan Resistensi Antimikroba (AMR)
+                </h2>
+                <p class="text-slate-600 text-base sm:text-lg">
+                    Banyak orang mengira antibiotik adalah "obat segala penyakit". Padahal, salah sasaran justru melatih bakteri menjadi super kebal!
+                </p>
+            </div>
+
+            <!-- Bagian A: Perbandingan Interaktif Virus vs Bakteri -->
+            <div class="bg-slate-50 rounded-3xl p-6 sm:p-8 lg:p-10 border border-slate-200 mb-14 shadow-sm">
+                <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-8">
+                    <div>
+                        <h3 class="font-display font-bold text-xl sm:text-2xl text-slate-900">Kenali Musuhnya: Virus vs Bakteri</h3>
+                        <p class="text-sm text-slate-600 mt-1">Klik tab di bawah untuk melihat perbedaan penyakit dan pengobatannya.</p>
+                    </div>
+                    <!-- Tombol Toggle Interaktif -->
+                    <div class="inline-flex p-1.5 bg-slate-200/80 rounded-2xl w-full md:w-auto">
+                        <button onclick="switchMicrobe('virus')" id="btn-virus" class="flex-1 md:flex-none px-5 py-2.5 rounded-xl font-semibold text-sm transition-all bg-white text-medical-700 shadow-sm">
+                            <i class="fa-solid fa-virus mr-1.5"></i>Infeksi Virus
+                        </button>
+                        <button onclick="switchMicrobe('bakteri')" id="btn-bakteri" class="flex-1 md:flex-none px-5 py-2.5 rounded-xl font-semibold text-sm transition-all text-slate-600 hover:text-slate-900">
+                            <i class="fa-solid fa-bacterium mr-1.5"></i>Infeksi Bakteri
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Konten Panel Virus -->
+                <div id="panel-virus" class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                    <div class="lg:col-span-5 flex justify-center bg-white p-6 rounded-2xl border border-slate-100 shadow-inner">
+                        <!-- SVG Ilustrasi Virus -->
+                        <svg viewBox="0 0 240 200" class="w-56 h-48">
+                            <circle cx="120" cy="100" r="48" fill="#fee2e2" stroke="#ef4444" stroke-width="3"/>
+                            <!-- Spike Protein Virus -->
+                            <g stroke="#ef4444" stroke-width="4" stroke-linecap="round">
+                                <line x1="120" y1="52" x2="120" y2="30"/><circle cx="120" cy="26" r="5" fill="#ef4444"/>
+                                <line x1="120" y1="148" x2="120" y2="170"/><circle cx="120" cy="174" r="5" fill="#ef4444"/>
+                                <line x1="72" y1="100" x2="50" y2="100"/><circle cx="46" cy="100" r="5" fill="#ef4444"/>
+                                <line x1="168" y1="100" x2="190" y2="100"/><circle cx="194" cy="100" r="5" fill="#ef4444"/>
+                                <line x1="86" y1="66" x2="70" y2="50"/><circle cx="67" cy="47" r="5" fill="#ef4444"/>
+                                <line x1="154" y1="134" x2="170" y2="150"/><circle cx="173" cy="153" r="5" fill="#ef4444"/>
+                                <line x1="154" y1="66" x2="170" y2="50"/><circle cx="173" cy="47" r="5" fill="#ef4444"/>
+                                <line x1="86" y1="134" x2="70" y2="150"/><circle cx="67" cy="153" r="5" fill="#ef4444"/>
+                            </g>
+                            <!-- Materi Genetik di dalam -->
+                            <path d="M100 95 Q110 80 120 95 T140 95" fill="none" stroke="#b91c1c" stroke-width="3" stroke-linecap="round"/>
+                            <path d="M100 110 Q110 95 120 110 T140 110" fill="none" stroke="#b91c1c" stroke-width="3" stroke-linecap="round"/>
+                            <!-- Tanda Silang Antibiotik -->
+                            <rect x="145" y="135" width="75" height="32" rx="16" fill="#0284c7" opacity="0.2"/>
+                            <line x1="140" y1="130" x2="225" y2="172" stroke="#dc2626" stroke-width="4" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <div class="lg:col-span-7 space-y-4">
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-red-100 text-red-800 text-xs font-bold">
+                            <i class="fa-solid fa-ban"></i> TIDAK MEMBUTUHKAN ANTIBIOTIK
+                        </div>
+                        <h4 class="font-display font-bold text-xl text-slate-900">Infeksi Virus (Sembuh Sendiri dengan Imunitas)</h4>
+                        <p class="text-slate-600 text-sm sm:text-base leading-relaxed">
+                            Virus berukuran jauh lebih kecil dari bakteri dan bersembunyi di dalam sel tubuh manusia. <strong>Antibiotik tidak dirancang untuk membunuh virus.</strong>
+                        </p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                            <div class="bg-white p-4 rounded-2xl border border-slate-200">
+                                <p class="font-bold text-slate-800 text-sm mb-1"><i class="fa-solid fa-notes-medical text-red-500 mr-1.5"></i>Contoh Penyakit:</p>
+                                <ul class="text-xs sm:text-sm text-slate-600 space-y-1">
+                                    <li>• Flu, pilek, dan batuk biasa (Common Cold)</li>
+                                    <li>• Sebagian besar radang tenggorokan</li>
+                                    <li>• Demam Berdarah (DBD) & COVID-19</li>
+                                    <li>• Diare cair akut tanpa darah</li>
+                                </ul>
+                            </div>
+                            <div class="bg-white p-4 rounded-2xl border border-slate-200">
+                                <p class="font-bold text-slate-800 text-sm mb-1"><i class="fa-solid fa-heart-pulse text-tealmed-600 mr-1.5"></i>Penanganan Tepat:</p>
+                                <ul class="text-xs sm:text-sm text-slate-600 space-y-1">
+                                    <li>• Istirahat cukup & minum banyak air putih</li>
+                                    <li>• Obat pereda gejala (misal: parasetamol)</li>
+                                    <li>• Konsumsi makanan bergizi tinggi</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Konten Panel Bakteri (Hidden Default) -->
+                <div id="panel-bakteri" class="hidden grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                    <div class="lg:col-span-5 flex justify-center bg-white p-6 rounded-2xl border border-slate-100 shadow-inner">
+                        <!-- SVG Ilustrasi Bakteri -->
+                        <svg viewBox="0 0 240 200" class="w-56 h-48">
+                            <!-- Badan Bakteri Kapsul -->
+                            <rect x="65" y="65" width="110" height="60" rx="30" fill="#ccfbf1" stroke="#0d9488" stroke-width="3.5"/>
+                            <!-- Flagela / Ekor -->
+                            <path d="M175 95 Q195 75 210 95 T235 90" fill="none" stroke="#0d9488" stroke-width="3" stroke-linecap="round"/>
+                            <path d="M173 108 Q190 120 208 108" fill="none" stroke="#0d9488" stroke-width="2.5" stroke-linecap="round"/>
+                            <!-- Bulu Pili -->
+                            <line x1="85" y1="65" x2="80" y2="52" stroke="#0d9488" stroke-width="2.5" stroke-linecap="round"/>
+                            <line x1="115" y1="65" x2="115" y2="50" stroke="#0d9488" stroke-width="2.5" stroke-linecap="round"/>
+                            <line x1="145" y1="65" x2="150" y2="52" stroke="#0d9488" stroke-width="2.5" stroke-linecap="round"/>
+                            <line x1="90" y1="125" x2="85" y2="138" stroke="#0d9488" stroke-width="2.5" stroke-linecap="round"/>
+                            <line x1="135" y1="125" x2="140" y2="138" stroke="#0d9488" stroke-width="2.5" stroke-linecap="round"/>
+                            <!-- Inti Bakteri -->
+                            <ellipse cx="115" cy="95" rx="28" ry="12" fill="none" stroke="#0f766e" stroke-width="2" stroke-dasharray="4 3"/>
+                            <!-- Tanda Centang Antibiotik -->
+                            <circle cx="185" cy="150" r="20" fill="#0284c7"/>
+                            <path d="M177 150 L183 156 L195 144" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <div class="lg:col-span-7 space-y-4">
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-medical-100 text-medical-800 text-xs font-bold">
+                            <i class="fa-solid fa-check-circle"></i> MEMBUTUHKAN ANTIBIOTIK RESEP DOKTER
+                        </div>
+                        <h4 class="font-display font-bold text-xl text-slate-900">Infeksi Bakteri (Memerlukan Terapi Terarah)</h4>
+                        <p class="text-slate-600 text-sm sm:text-base leading-relaxed">
+                            Bakteri adalah mikroorganisme bersel tunggal. Sebagian besar bakteri baik bagi tubuh, namun bakteri patogen tertentu menyebabkan infeksi serius yang <strong>harus didiagnosis dokter</strong>.
+                        </p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                            <div class="bg-white p-4 rounded-2xl border border-slate-200">
+                                <p class="font-bold text-slate-800 text-sm mb-1"><i class="fa-solid fa-notes-medical text-medical-600 mr-1.5"></i>Contoh Penyakit:</p>
+                                <ul class="text-xs sm:text-sm text-slate-600 space-y-1">
+                                    <li>• Tuberkulosis (TBC) & Pneumonia bakterial</li>
+                                    <li>• Infeksi Saluran Kemih (ISK)</li>
+                                    <li>• Tifus (Demam Tifoid)</li>
+                                    <li>• Infeksi luka bernanah berat</li>
+                                </ul>
+                            </div>
+                            <div class="bg-white p-4 rounded-2xl border border-slate-200">
+                                <p class="font-bold text-slate-800 text-sm mb-1"><i class="fa-solid fa-user-doctor text-tealmed-600 mr-1.5"></i>Penanganan Tepat:</p>
+                                <ul class="text-xs sm:text-sm text-slate-600 space-y-1">
+                                    <li>• Periksa ke dokter untuk memastikan infeksi bakteri</li>
+                                    <li>• Minum antibiotik sesuai dosis & jam yang tepat</li>
+                                    <li>• Wajib dihabiskan meski badan sudah sehat</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bagian B: Simulasi Visual Mekanisme Terjadinya Resistensi Bakteri -->
+            <div class="bg-gradient-to-br from-slate-900 to-medical-900 text-white rounded-3xl p-6 sm:p-10 shadow-xl">
+                <div class="max-w-3xl mb-8">
+                    <span class="px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-400/30 text-xs font-semibold">
+                        Simulasi Mekanisme AMR
+                    </span>
+                    <h3 class="font-display font-bold text-2xl sm:text-3xl mt-3">Bagaimana Bakteri Menjadi "Superbug" (Kebal)?</h3>
+                    <p class="text-slate-300 text-sm sm:text-base mt-2">
+                        Klik setiap tahapan di bawah ini untuk melihat proses evolusi bakteri ketika antibiotik digunakan secara tidak tepat (misal: berhenti minum obat sebelum habis).
+                    </p>
+                </div>
+
+                <!-- Stepper Interactive Buttons -->
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-8">
+                    <button onclick="setAmrStep(1)" id="step-btn-1" class="amr-step-btn p-4 rounded-2xl bg-medical-600 border-2 border-sky-400 text-left transition-all">
+                        <span class="text-xs font-bold text-sky-200 block">TAHAP 1</span>
+                        <span class="font-bold text-sm sm:text-base">Populasi Awal</span>
+                    </button>
+                    <button onclick="setAmrStep(2)" id="step-btn-2" class="amr-step-btn p-4 rounded-2xl bg-white/10 border-2 border-transparent hover:bg-white/15 text-left transition-all">
+                        <span class="text-xs font-bold text-slate-400 block">TAHAP 2</span>
+                        <span class="font-bold text-sm sm:text-base">Paparan Antibiotik</span>
+                    </button>
+                    <button onclick="setAmrStep(3)" id="step-btn-3" class="amr-step-btn p-4 rounded-2xl bg-white/10 border-2 border-transparent hover:bg-white/15 text-left transition-all">
+                        <span class="text-xs font-bold text-slate-400 block">TAHAP 3</span>
+                        <span class="font-bold text-sm sm:text-base">Obat Dihentikan Dini</span>
+                    </button>
+                    <button onclick="setAmrStep(4)" id="step-btn-4" class="amr-step-btn p-4 rounded-2xl bg-white/10 border-2 border-transparent hover:bg-white/15 text-left transition-all">
+                        <span class="text-xs font-bold text-slate-400 block">TAHAP 4</span>
+                        <span class="font-bold text-sm sm:text-base">Dominasi Superbug</span>
+                    </button>
+                </div>
+
+                <!-- Area Visualisasi SVG Dinamis AMR -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-slate-800/70 p-6 rounded-2xl border border-slate-700">
+                    <div class="lg:col-span-6 flex justify-center">
+                        <svg id="amr-svg-canvas" viewBox="0 0 320 200" class="w-full max-w-sm h-auto bg-slate-900/90 rounded-2xl border border-slate-700 p-2">
+                            <!-- Konten SVG diisi oleh JavaScript -->
+                        </svg>
+                    </div>
+                    <div class="lg:col-span-6 space-y-4">
+                        <div class="flex items-center gap-3">
+                            <span id="amr-step-badge" class="w-9 h-9 rounded-xl bg-sky-500 text-slate-950 font-extrabold flex items-center justify-center">1</span>
+                            <h4 id="amr-step-title" class="font-display font-bold text-xl text-white">Banyak Bakteri, Segelintir Bermutasi</h4>
+                        </div>
+                        <p id="amr-step-desc" class="text-slate-300 text-sm sm:text-base leading-relaxed">
+                            Di dalam tubuh yang terinfeksi terdapat jutaan bakteri normal (biru) dan mungkin 1-2 bakteri yang secara alami memiliki mutasi genetik (merah) sehingga lebih tahan terhadap serangan obat.
+                        </p>
+                        <div class="flex flex-wrap gap-4 pt-2 text-xs text-slate-300">
+                            <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-sky-400 inline-block"></span> Bakteri Normal</span>
+                            <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-red-500 inline-block"></span> Bakteri Resisten (Kebal)</span>
+                            <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-slate-600 inline-block"></span> Bakteri Mati</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== 3. PRINSIP 5T / ATURAN EMAS ==================== -->
+    <section id="aturan-emas" class="py-16 md:py-24 bg-medical-50/70 border-y border-slate-200/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-14">
+                <span class="text-medical-600 font-bold text-sm uppercase tracking-wider">Modul 02 • Panduan Praktis</span>
+                <h2 class="font-display font-bold text-2xl sm:text-3xl md:text-4xl text-slate-900 mt-2 mb-4">
+                    5 Aturan Emas Penggunaan Antibiotik Bijak
+                </h2>
+                <p class="text-slate-600 text-base sm:text-lg">
+                    Klik setiap kartu untuk membuka alasan medis di balik setiap aturan penting ini.
+                </p>
+            </div>
+
+            <!-- Grid 5 Kartu Interaktif -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+                <!-- Kartu 1 -->
+                <div onclick="toggleRuleCard(this)" class="cursor-pointer group bg-white rounded-3xl p-6 sm:p-7 border border-slate-200 hover:border-medical-500 shadow-sm hover:shadow-xl transition-all">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="w-12 h-12 rounded-2xl bg-red-50 text-red-600 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-file-prescription"></i>
+                        </div>
+                        <span class="px-3 py-1 rounded-full bg-slate-100 text-slate-600 text-xs font-bold">Aturan #1</span>
+                    </div>
+                    <h3 class="font-display font-bold text-lg sm:text-xl text-slate-900 mb-2">
+                        Jangan Beli Antibiotik Tanpa Resep Dokter
+                    </h3>
+                    <p class="text-sm text-slate-600">
+                        Antibiotik tergolong obat keras (logo lingkaran merah huruf K) yang hanya boleh diperoleh dengan resep dokter.
+                    </p>
+                    <div class="rule-detail hidden mt-4 pt-4 border-t border-slate-100 text-xs sm:text-sm text-medical-800 bg-medical-50/70 p-3.5 rounded-xl">
+                        <strong>Mengapa penting?</strong> Hanya dokter yang dapat menentukan apakah sakit Anda disebabkan oleh bakteri dan memilih jenis antibiotik yang paling sesuai.
+                    </div>
+                    <div class="mt-4 text-xs font-semibold text-medical-600 flex items-center gap-1">
+                        <span>Klik untuk detail medis</span> <i class="fa-solid fa-chevron-down transition-transform"></i>
+                    </div>
+                </div>
+
+                <!-- Kartu 2 -->
+                <div onclick="toggleRuleCard(this)" class="cursor-pointer group bg-white rounded-3xl p-6 sm:p-7 border border-slate-200 hover:border-medical-500 shadow-sm hover:shadow-xl transition-all">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-box-archive"></i>
+                        </div>
+                        <span class="px-3 py-1 rounded-full bg-slate-100 text-slate-600 text-xs font-bold">Aturan #2</span>
+                    </div>
+                    <h3 class="font-display font-bold text-lg sm:text-xl text-slate-900 mb-2">
+                        Jangan Gunakan Antibiotik Sisa
+                    </h3>
+                    <p class="text-sm text-slate-600">
+                        Jangan pernah menyimpan atau meminum kembali antibiotik sisa dari penyakit sebelumnya meskipun gejalanya terasa mirip.
+                    </p>
+                    <div class="rule-detail hidden mt-4 pt-4 border-t border-slate-100 text-xs sm:text-sm text-medical-800 bg-medical-50/70 p-3.5 rounded-xl">
+                        <strong>Mengapa penting?</strong> Pertama, antibiotik seharusnya tidak bersisa jika dihabiskan. Kedua, obat sisa jumlahnya tidak cukup untuk membasmi infeksi baru dan berisiko kedaluwarsa.
+                    </div>
+                    <div class="mt-4 text-xs font-semibold text-medical-600 flex items-center gap-1">
+                        <span>Klik untuk detail medis</span> <i class="fa-solid fa-chevron-down transition-transform"></i>
+                    </div>
+                </div>
+
+                <!-- Kartu 3 -->
+                <div onclick="toggleRuleCard(this)" class="cursor-pointer group bg-white rounded-3xl p-6 sm:p-7 border border-slate-200 hover:border-medical-500 shadow-sm hover:shadow-xl transition-all">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="w-12 h-12 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-people-arrows"></i>
+                        </div>
+                        <span class="px-3 py-1 rounded-full bg-slate-100 text-slate-600 text-xs font-bold">Aturan #3</span>
+                    </div>
+                    <h3 class="font-display font-bold text-lg sm:text-xl text-slate-900 mb-2">
+                        Jangan Berbagi Antibiotik dengan Orang Lain
+                    </h3>
+                    <p class="text-sm text-slate-600">
+                        Meskipun anggota keluarga atau teman mengalami gejala demam atau batuk yang sama, jangan berikan antibiotik Anda.
+                    </p>
+                    <div class="rule-detail hidden mt-4 pt-4 border-t border-slate-100 text-xs sm:text-sm text-medical-800 bg-medical-50/70 p-3.5 rounded-xl">
+                        <strong>Mengapa penting?</strong> Dosis antibiotik dihitung berdasarkan berat badan, fungsi ginjal/hati, dan jenis bakteri spesifik tiap individu. Berbagi obat justru membahayakan.
+                    </div>
+                    <div class="mt-4 text-xs font-semibold text-medical-600 flex items-center gap-1">
+                        <span>Klik untuk detail medis</span> <i class="fa-solid fa-chevron-down transition-transform"></i>
+                    </div>
+                </div>
+
+                <!-- Kartu 4 -->
+                <div onclick="toggleRuleCard(this)" class="cursor-pointer group bg-white rounded-3xl p-6 sm:p-7 border border-slate-200 hover:border-tealmed-500 shadow-sm hover:shadow-xl transition-all">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="w-12 h-12 rounded-2xl bg-tealmed-50 text-tealmed-600 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-hourglass-end"></i>
+                        </div>
+                        <span class="px-3 py-1 rounded-full bg-tealmed-50 text-tealmed-700 text-xs font-bold">Aturan #4</span>
+                    </div>
+                    <h3 class="font-display font-bold text-lg sm:text-xl text-slate-900 mb-2">
+                        Habiskan Sesuai Anjuran & Tepat Waktu
+                    </h3>
+                    <p class="text-sm text-slate-600">
+                        Minum antibiotik hingga tuntas sesuai durasi yang diresepkan dokter, meskipun tubuh sudah terasa sehat di hari ke-2.
+                    </p>
+                    <div class="rule-detail hidden mt-4 pt-4 border-t border-slate-100 text-xs sm:text-sm text-tealmed-900 bg-tealmed-50/70 p-3.5 rounded-xl">
+                        <strong>Mengapa penting?</strong> Gejala hilang bukan berarti seluruh bakteri telah mati. Menghentikan obat lebih awal membiarkan bakteri terkuat bertahan hidup dan bermutasi kebal.
+                    </div>
+                    <div class="mt-4 text-xs font-semibold text-tealmed-600 flex items-center gap-1">
+                        <span>Klik untuk detail medis</span> <i class="fa-solid fa-chevron-down transition-transform"></i>
+                    </div>
+                </div>
+
+                <!-- Kartu 5 -->
+                <div onclick="toggleRuleCard(this)" class="cursor-pointer group bg-white rounded-3xl p-6 sm:p-7 border border-slate-200 hover:border-tealmed-500 shadow-sm hover:shadow-xl transition-all md:col-span-2 lg:col-span-2">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-2xl bg-medical-50 text-medical-600 flex items-center justify-center text-xl shrink-0 group-hover:scale-110 transition-transform">
+                                <i class="fa-solid fa-user-nurse"></i>
+                            </div>
+                            <div>
+                                <span class="px-3 py-0.5 rounded-full bg-medical-50 text-medical-700 text-xs font-bold">Aturan #5 • Tanya Apoteker (DaGuSiBu)</span>
+                                <h3 class="font-display font-bold text-lg sm:text-xl text-slate-900 mt-1">
+                                    Tanyakan Informasi Lengkap kepada Dokter & Apoteker
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-sm text-slate-600">
+                        Pastikan Anda memahami aturan minum (sebelum/sesudah makan), interval jam minum, kemungkinan efek samping, serta cara penyimpanan dan pembuangan obat yang aman.
+                    </p>
+                    <div class="rule-detail hidden mt-4 pt-4 border-t border-slate-100 text-xs sm:text-sm text-medical-900 bg-medical-50/70 p-4 rounded-xl">
+                        <strong>Tips Tanya Apoteker (5O):</strong> Pastikan Anda tahu <em>Obat ini apa namanya dan kandungannya? Obat ini apa khasiatnya? Obat ini berapa dosisnya? Obat ini bagaimana cara menggunakannya? Obat ini apa efek sampingnya?</em>
+                    </div>
+                    <div class="mt-4 text-xs font-semibold text-medical-600 flex items-center gap-1">
+                        <span>Klik untuk panduan Tanya Apoteker</span> <i class="fa-solid fa-chevron-down transition-transform"></i>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== 4. CEK MITOS VS FAKTA ==================== -->
+    <section id="mitos-fakta" class="py-16 md:py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-14">
+                <span class="text-tealmed-600 font-bold text-sm uppercase tracking-wider">Modul 03 • Uji Persepsi</span>
+                <h2 class="font-display font-bold text-2xl sm:text-3xl md:text-4xl text-slate-900 mt-2 mb-4">
+                    Cek Mitos vs Fakta Seputar Antibiotik
+                </h2>
+                <p class="text-slate-600 text-base sm:text-lg">
+                    Masih banyak kesalahpahaman di masyarakat. Tebak apakah pernyataan berikut <strong>MITOS</strong> atau <strong>FAKTA</strong>, lalu klik untuk membuka kebenaran medisnya!
+                </p>
+            </div>
+
+            <div id="myth-cards-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Kartu Mitos vs Fakta di-render oleh JavaScript agar interaktif dan bersih -->
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== 5. KALKULATOR & PENGINGAT JADWAL MINUM OBAT ==================== -->
+    <section id="jadwal-obat" class="py-16 md:py-24 bg-gradient-to-b from-slate-50 to-medical-50/60 border-t border-slate-200">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <span class="text-medical-600 font-bold text-sm uppercase tracking-wider">Modul 04 • Alat Bantu Praktis</span>
+                <h2 class="font-display font-bold text-2xl sm:text-3xl md:text-4xl text-slate-900 mt-2 mb-4">
+                    Simulasi Jadwal Minum Antibiotik "Tepat Waktu"
+                </h2>
+                <p class="text-slate-600 text-base">
+                    Aturan <strong>"3 x 1 sehari"</strong> pada antibiotik bukan berarti pagi-siang-malam saat jam makan, melainkan <strong>setiap 8 jam sekali</strong> agar kadar obat dalam darah tetap stabil membunuh bakteri!
+                </p>
+            </div>
+
+            <div class="bg-white rounded-3xl shadow-xl border border-slate-200 overflow-hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-12">
+                    <!-- Form Pengaturan Jadwal -->
+                    <div class="lg:col-span-5 p-6 sm:p-8 bg-slate-900 text-white flex flex-col justify-between">
+                        <div>
+                            <h3 class="font-display font-bold text-xl mb-2 flex items-center gap-2">
+                                <i class="fa-solid fa-clock text-tealmed-400"></i> Atur Simulasi Dosis
+                            </h3>
+                            <p class="text-xs text-slate-400 mb-6">Masukkan aturan pakai dari resep Anda untuk melihat jadwal jam minum yang ideal.</p>
+
+                            <div class="space-y-5">
+                                <!-- Input Nama Obat (Opsional) -->
+                                <div>
+                                    <label for="med-name" class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Nama Antibiotik (Opsional)</label>
+                                    <input type="text" id="med-name" placeholder="Contoh: Amoxicillin 500mg" value="Antibiotik Resep" class="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white text-sm focus:outline-none focus:border-tealmed-400">
+                                </div>
+
+                                <!-- Pilihan Frekuensi -->
+                                <div>
+                                    <label for="med-freq" class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Frekuensi per Hari (24 Jam)</label>
+                                    <select id="med-freq" onchange="calculateSchedule()" class="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white text-sm focus:outline-none focus:border-tealmed-400">
+                                        <option value="2">2 x Sehari (Setiap 12 Jam)</option>
+                                        <option value="3" selected>3 x Sehari (Setiap 8 Jam)</option>
+                                        <option value="4">4 x Sehari (Setiap 6 Jam)</option>
+                                        <option value="1">1 x Sehari (Setiap 24 Jam)</option>
+                                    </select>
+                                </div>
+
+                                <!-- Input Jam Minum Pertama -->
+                                <div>
+                                    <label for="start-time" class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Jam Minum Dosis Pertama</label>
+                                    <input type="time" id="start-time" value="07:00" onchange="calculateSchedule()" class="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white text-sm focus:outline-none focus:border-tealmed-400">
+                                </div>
+
+                                <button onclick="calculateSchedule()" class="w-full py-3.5 rounded-xl bg-tealmed-500 hover:bg-tealmed-600 text-slate-950 font-bold text-sm transition-all shadow-lg">
+                                    <i class="fa-solid fa-calculator mr-1.5"></i> Hitung Jadwal Ideal
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="mt-8 pt-4 border-t border-slate-800 text-[11px] text-slate-400">
+                            <i class="fa-solid fa-circle-info text-sky-400 mr-1"></i> Jika lupa minum obat, segera minum begitu teringat. Namun jika sudah mendekati jadwal berikutnya, abaikan dosis yang terlewat (jangan menggandakan dosis).
+                        </div>
+                    </div>
+
+                    <!-- Hasil Timeline Jadwal -->
+                    <div class="lg:col-span-7 p-6 sm:p-8 flex flex-col justify-between">
+                        <div>
+                            <div class="flex flex-wrap justify-between items-center gap-2 mb-6">
+                                <div>
+                                    <span class="text-xs font-bold text-tealmed-600 uppercase">Rekomendasi Interval Waktu</span>
+                                    <h4 id="schedule-header-title" class="font-display font-bold text-xl text-slate-900">Jadwal Minum Tiap 8 Jam</h4>
+                                </div>
+                                <button onclick="copyScheduleText()" class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition-colors flex items-center gap-1.5">
+                                    <i class="fa-regular fa-copy"></i> Salin Jadwal
+                                </button>
+                            </div>
+
+                            <!-- Notifikasi Salin Berhasil -->
+                            <div id="copy-toast" class="hidden mb-4 px-4 py-2.5 rounded-xl bg-tealmed-50 border border-tealmed-200 text-tealmed-800 text-xs font-semibold flex items-center gap-2">
+                                <i class="fa-solid fa-check-circle text-tealmed-600"></i> Jadwal berhasil disalin ke papan klip! Pasang alarm di ponsel Anda.
+                            </div>
+
+                            <!-- Daftar Jam Dosis -->
+                            <div id="schedule-list" class="space-y-3">
+                                <!-- Diisi secara dinamis oleh JS -->
+                            </div>
+                        </div>
+
+                        <!-- Grafik Visual Kadar Obat dalam Darah -->
+                        <div class="mt-8 p-4 rounded-2xl bg-medical-50 border border-medical-100">
+                            <p class="text-xs font-bold text-medical-900 mb-1">Mengapa harus tepat interval jamnya?</p>
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                Menjaga jarak waktu yang konsisten memastikan konsentrasi antibiotik di dalam darah selalu berada di atas <strong>Kadar Hambat Minimal (MIC)</strong>, sehingga bakteri tidak memiliki celah untuk pulih dan melawan balik.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== 6. KUIS INTERAKTIF & SERTIFIKAT DIGITAL ==================== -->
+    <section id="kuis-amr" class="py-16 md:py-24 bg-white border-t border-slate-200">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <span class="text-tealmed-600 font-bold text-sm uppercase tracking-wider">Modul 05 • Evaluasi & Penghargaan</span>
+                <h2 class="font-display font-bold text-2xl sm:text-3xl md:text-4xl text-slate-900 mt-2 mb-4">
+                    Simulasi Kasus & Kuis Duta Bijak Antibiotik
+                </h2>
+                <p class="text-slate-600 text-base">
+                    Jawab 5 studi kasus singkat di bawah ini. Raih skor minimal <strong>80 (4 dari 5 benar)</strong> untuk mendapatkan Lencana & Sertifikat Digital!
+                </p>
+            </div>
+
+            <!-- Container Utama Kuis -->
+            <div class="bg-slate-50 rounded-3xl p-6 sm:p-10 border border-slate-200 shadow-lg">
+                
+                <!-- Layar Awal Kuis (Input Nama) -->
+                <div id="quiz-start-screen" class="text-center max-w-md mx-auto py-4">
+                    <div class="w-16 h-16 rounded-2xl bg-medical-100 text-medical-600 flex items-center justify-center text-3xl mx-auto mb-5">
+                        <i class="fa-solid fa-user-shield"></i>
+                    </div>
+                    <h3 class="font-display font-bold text-xl text-slate-900 mb-2">Siap Menguji Pemahaman Anda?</h3>
+                    <p class="text-sm text-slate-600 mb-6">Masukkan nama Anda untuk dicantumkan pada sertifikat digital jika berhasil lulus.</p>
+                    
+                    <div class="mb-5 text-left">
+                        <label for="participant-name" class="block text-xs font-bold text-slate-700 uppercase mb-1.5">Nama Lengkap Anda</label>
+                        <input type="text" id="participant-name" placeholder="Masukkan nama Anda..." class="w-full px-4 py-3 rounded-xl bg-white border border-slate-300 text-slate-900 text-sm focus:outline-none focus:border-medical-600">
+                    </div>
+
+                    <button onclick="startQuiz()" class="w-full py-3.5 rounded-xl bg-medical-600 hover:bg-medical-700 text-white font-bold text-base shadow-md transition-all">
+                        Mulai Kuis Sekarang <i class="fa-solid fa-arrow-right ml-1.5"></i>
+                    </button>
+                </div>
+
+                <!-- Layar Pertanyaan Kuis -->
+                <div id="quiz-question-screen" class="hidden">
+                    <!-- Progress Bar -->
+                    <div class="flex items-center justify-between text-xs font-bold text-slate-500 mb-2">
+                        <span id="quiz-progress-text">Pertanyaan 1 dari 5</span>
+                        <span id="quiz-score-live" class="text-medical-600">Skor: 0</span>
+                    </div>
+                    <div class="w-full h-2.5 bg-slate-200 rounded-full overflow-hidden mb-8">
+                        <div id="quiz-progress-bar" class="h-full bg-gradient-to-r from-medical-500 to-tealmed-500 transition-all duration-300" style="width: 20%"></div>
+                    </div>
+
+                    <!-- Teks Kasus / Pertanyaan -->
+                    <div class="mb-6">
+                        <span class="inline-block px-3 py-1 rounded-lg bg-medical-100 text-medical-800 text-xs font-bold mb-2">Studi Kasus</span>
+                        <h3 id="question-text" class="font-display font-bold text-lg sm:text-xl text-slate-900 leading-snug">
+                            <!-- Pertanyaan diisi JS -->
+                        </h3>
+                    </div>
+
+                    <!-- Pilihan Jawaban -->
+                    <div id="options-container" class="space-y-3 mb-6">
+                        <!-- Pilihan diisi JS -->
+                    </div>
+
+                    <!-- Kotak Penjelasan Medis Setelah Menjawab -->
+                    <div id="explanation-box" class="hidden p-4 sm:p-5 rounded-2xl mb-6 border text-sm leading-relaxed">
+                        <!-- Penjelasan diisi JS -->
+                    </div>
+
+                    <div class="flex justify-end">
+                        <button id="next-question-btn" onclick="nextQuestion()" class="hidden px-6 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-semibold text-sm transition-all">
+                            Pertanyaan Berikutnya <i class="fa-solid fa-arrow-right ml-1.5"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Layar Hasil & Sertifikat Digital -->
+                <div id="quiz-result-screen" class="hidden text-center">
+                    <div id="result-header" class="mb-8">
+                        <!-- Skor & Status Kelulusan diisi JS -->
+                    </div>
+
+                    <!-- Kartu Sertifikat Digital (Tampil jika lulus >= 80) -->
+                    <div id="certificate-card" class="hidden max-w-2xl mx-auto bg-white border-4 border-double border-medical-600 rounded-2xl p-6 sm:p-10 shadow-xl relative overflow-hidden mb-8 text-center">
+                        <!-- Watermark SVG -->
+                        <div class="absolute inset-0 flex items-center justify-center opacity-5 pointer-events-none">
+                            <i class="fa-solid fa-shield-virus text-[220px] text-medical-900"></i>
+                        </div>
+                        
+                        <div class="relative z-10">
+                            <div class="flex justify-center items-center gap-2 text-tealmed-600 font-bold text-xs uppercase tracking-widest mb-2">
+                                <i class="fa-solid fa-award text-lg"></i> Sertifikat Apresiasi Edukasi Kesehatan
+                            </div>
+                            <h4 class="font-display font-extrabold text-2xl sm:text-3xl text-slate-900 tracking-tight">
+                                DUTA BIJAK ANTIBIOTIK
+                            </h4>
+                            <p class="text-xs text-slate-500 mt-1 mb-6">Gerakan Masyarakat Cerdas Menggunakan Obat (Gema Cermat)</p>
+                            
+                            <p class="text-sm text-slate-600">Diberikan dengan bangga kepada:</p>
+                            <p id="cert-user-name" class="font-display font-extrabold text-2xl sm:text-3xl text-medical-700 my-2 border-b-2 border-slate-200 inline-block px-6 pb-1">
+                                Nama Peserta
+                            </p>
+                            
+                            <p class="text-xs sm:text-sm text-slate-600 max-w-md mx-auto mt-3 leading-relaxed">
+                                Telah berhasil menyelesaikan modul pembelajaran dan lulus evaluasi pemahaman mengenai <strong>Penggunaan Antibiotik yang Bijak untuk Mencegah Resistensi Antimikroba (AMR)</strong>.
+                            </p>
+
+                            <div class="flex flex-wrap justify-between items-center mt-8 pt-4 border-t border-slate-100 text-xs text-slate-500 gap-4">
+                                <div class="text-left">
+                                    <span class="block font-bold text-slate-700">Skor Evaluasi:</span>
+                                    <span id="cert-score" class="text-tealmed-600 font-bold">100 / 100</span>
+                                </div>
+                                <div class="w-12 h-12 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 text-white flex items-center justify-center shadow-md mx-auto sm:mx-0">
+                                    <i class="fa-solid fa-medal text-xl"></i>
+                                </div>
+                                <div class="text-right">
+                                    <span class="block font-bold text-slate-700">Tanggal Diterbitkan:</span>
+                                    <span id="cert-date">2026</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row justify-center gap-3">
+                        <button onclick="resetQuiz()" class="px-6 py-3 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-800 font-semibold text-sm transition-all">
+                            <i class="fa-solid fa-rotate-right mr-1.5"></i> Ulangi Kuis
+                        </button>
+                        <button id="print-cert-btn" onclick="window.print()" class="hidden px-6 py-3 rounded-xl bg-tealmed-600 hover:bg-tealmed-700 text-white font-semibold text-sm transition-all shadow">
+                            <i class="fa-solid fa-print mr-1.5"></i> Cetak / Simpan PDF Sertifikat
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== 7. FOOTER INFORMATIF & DISCLAIMER ==================== -->
+    <footer class="bg-slate-900 text-slate-300 pt-14 pb-10 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 pb-10 border-b border-slate-800">
+                
+                <!-- Kolom Brand & Misi -->
+                <div class="lg:col-span-5 space-y-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-medical-500 to-tealmed-500 flex items-center justify-center text-white">
+                            <i class="fa-solid fa-capsules"></i>
+                        </div>
+                        <span class="font-display font-bold text-xl text-white">Bijak<span class="text-medical-400">Antibiotik</span></span>
+                    </div>
+                    <p class="text-sm text-slate-400 leading-relaxed">
+                        Platform edukasi kesehatan digital untuk meningkatkan literasi masyarakat dalam mencegah Resistensi Antimikroba (AMR). Bersama kita jaga efektivitas antibiotik untuk generasi mendatang.
+                    </p>
+                    <div class="flex items-center gap-2 text-xs text-tealmed-400 font-semibold">
+                        <i class="fa-solid fa-shield-heart"></i>
+                        <span>Mendukung Pekan Peduli Antimikroba Sedunia (WAAW)</span>
+                    </div>
+                </div>
+
+                <!-- Kolom Referensi Resmi -->
+                <div class="lg:col-span-4 space-y-3">
+                    <h4 class="font-display font-bold text-white text-sm uppercase tracking-wider">Referensi Kampanye Kesehatan</h4>
+                    <ul class="space-y-2.5 text-sm text-slate-400">
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-check text-tealmed-500 mt-1 text-xs"></i>
+                            <span><strong>WHO:</strong> World Antimicrobial Awareness Week (WAAW) & Global Action Plan on AMR.</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-check text-tealmed-500 mt-1 text-xs"></i>
+                            <span><strong>Kemenkes RI:</strong> Gerakan Masyarakat Cerdas Menggunakan Obat (Gema Cermat) & Komite Pengendalian Resistensi Antimikroba (KPRA).</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-check text-tealmed-500 mt-1 text-xs"></i>
+                            <span><strong>BPOM RI:</strong> Gerakan Tanya Obat (5O) & DaGuSiBu.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Kolom Navigasi Cepat -->
+                <div class="lg:col-span-3 space-y-3">
+                    <h4 class="font-display font-bold text-white text-sm uppercase tracking-wider">Modul Edukasi</h4>
+                    <ul class="space-y-2 text-sm text-slate-400">
+                        <li><a href="#apa-itu-amr" class="hover:text-white transition-colors">Virus vs Bakteri & Mekanisme AMR</a></li>
+                        <li><a href="#aturan-emas" class="hover:text-white transition-colors">5 Aturan Emas Antibiotik</a></li>
+                        <li><a href="#mitos-fakta" class="hover:text-white transition-colors">Cek Mitos vs Fakta</a></li>
+                        <li><a href="#jadwal-obat" class="hover:text-white transition-colors">Kalkulator Jadwal Minum</a></li>
+                        <li><a href="#kuis-amr" class="hover:text-white transition-colors">Kuis & Sertifikat Digital</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Disclaimer Medis Wajib -->
+            <div class="mt-8 p-4 rounded-2xl bg-slate-800/70 border border-slate-700/80 text-xs text-slate-400 leading-relaxed">
+                <strong class="text-amber-400"><i class="fa-solid fa-triangle-exclamation mr-1"></i> Disclaimer Medis:</strong> 
+                Informasi yang disajikan pada website ini bertujuan untuk edukasi masyarakat dan promosi kesehatan semata. Konten ini <strong>bukan merupakan pengganti</strong> nasihat medis profesional, diagnosis, maupun resep pengobatan dari dokter. Selalu konsultasikan kondisi kesehatan dan penggunaan obat-obatan Anda dengan dokter atau apoteker berlisensi.
+            </div>
+
+            <div class="mt-6 text-center text-xs text-slate-500">
+                &copy; 2026 Edukasi Digital Bijak Antibiotik • Cegah Resistensi Antimikroba (AMR).
+            </div>
+        </div>
+    </footer>
+
+    <!-- ==================== JAVASCRIPT INTERAKTIF ==================== -->
+    <script>
+        // 1. NAVIGASI MOBILE TOGGLE
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // 2. TAB PERBANDINGAN VIRUS VS BAKTERI
+        function switchMicrobe(type) {
+            const btnVirus = document.getElementById('btn-virus');
+            const btnBakteri = document.getElementById('btn-bakteri');
+            const panelVirus = document.getElementById('panel-virus');
+            const panelBakteri = document.getElementById('panel-bakteri');
+
+            if (type === 'virus') {
+                btnVirus.className = 'flex-1 md:flex-none px-5 py-2.5 rounded-xl font-semibold text-sm transition-all bg-white text-medical-700 shadow-sm';
+                btnBakteri.className = 'flex-1 md:flex-none px-5 py-2.5 rounded-xl font-semibold text-sm transition-all text-slate-600 hover:text-slate-900';
+                panelVirus.classList.remove('hidden');
+                panelVirus.classList.add('grid');
+                panelBakteri.classList.add('hidden');
+                panelBakteri.classList.remove('grid');
+            } else {
+                btnBakteri.className = 'flex-1 md:flex-none px-5 py-2.5 rounded-xl font-semibold text-sm transition-all bg-white text-tealmed-700 shadow-sm';
+                btnVirus.className = 'flex-1 md:flex-none px-5 py-2.5 rounded-xl font-semibold text-sm transition-all text-slate-600 hover:text-slate-900';
+                panelBakteri.classList.remove('hidden');
+                panelBakteri.classList.add('grid');
+                panelVirus.classList.add('hidden');
+                panelVirus.classList.remove('grid');
+            }
+        }
+
+        // 3. SIMULASI VISUAL MEKANISME AMR (4 TAHAPAN)
+        const amrStepsData = {
+            1: {
+                title: "Banyak Bakteri, Segelintir Bermutasi",
+                desc: "Di dalam tubuh yang terinfeksi terdapat jutaan bakteri normal (biru) dan mungkin 1–2 bakteri yang secara alami memiliki mutasi genetik (merah) sehingga lebih tahan terhadap serangan obat.",
+                svg: `
+                    <circle cx="60" cy="50" r="10" fill="#38bdf8"/><circle cx="110" cy="40" r="10" fill="#38bdf8"/>
+                    <circle cx="160" cy="55" r="10" fill="#38bdf8"/><circle cx="220" cy="45" r="10" fill="#38bdf8"/>
+                    <circle cx="265" cy="70" r="10" fill="#38bdf8"/><circle cx="50" cy="100" r="10" fill="#38bdf8"/>
+                    <circle cx="100" cy="95" r="10" fill="#38bdf8"/><circle cx="155" cy="105" r="12" fill="#ef4444" stroke="#fca5a5" stroke-width="2"/>
+                    <circle cx="205" cy="95" r="10" fill="#38bdf8"/><circle cx="255" cy="120" r="10" fill="#38bdf8"/>
+                    <circle cx="75" cy="150" r="10" fill="#38bdf8"/><circle cx="130" cy="155" r="10" fill="#38bdf8"/>
+                    <circle cx="185" cy="150" r="10" fill="#38bdf8"/><circle cx="235" cy="160" r="12" fill="#ef4444" stroke="#fca5a5" stroke-width="2"/>
+                `
+            },
+            2: {
+                title: "Paparan Antibiotik Membunuh Bakteri Lemah",
+                desc: "Saat antibiotik mulai diminum, obat bekerja membunuh bakteri normal yang sensitif (berubah abu-abu/mati). Gejala sakit mulai mereda karena jumlah bakteri berkurang drastis.",
+                svg: `
+                    <circle cx="60" cy="50" r="9" fill="#475569" opacity="0.5"/><circle cx="110" cy="40" r="9" fill="#475569" opacity="0.5"/>
+                    <circle cx="160" cy="55" r="10" fill="#38bdf8"/><circle cx="220" cy="45" r="9" fill="#475569" opacity="0.5"/>
+                    <circle cx="265" cy="70" r="9" fill="#475569" opacity="0.5"/><circle cx="50" cy="100" r="9" fill="#475569" opacity="0.5"/>
+                    <circle cx="100" cy="95" r="10" fill="#38bdf8"/><circle cx="155" cy="105" r="13" fill="#ef4444" stroke="#fca5a5" stroke-width="2.5"/>
+                    <circle cx="205" cy="95" r="9" fill="#475569" opacity="0.5"/><circle cx="255" cy="120" r="9" fill="#475569" opacity="0.5"/>
+                    <circle cx="75" cy="150" r="9" fill="#475569" opacity="0.5"/><circle cx="130" cy="155" r="10" fill="#38bdf8"/>
+                    <circle cx="185" cy="150" r="9" fill="#475569" opacity="0.5"/><circle cx="235" cy="160" r="13" fill="#ef4444" stroke="#fca5a5" stroke-width="2.5"/>
+                `
+            },
+            3: {
+                title: "Obat Dihentikan Sebelum Habis!",
+                desc: "Karena merasa sudah enakan, pasien berhenti minum antibiotik. Bakteri resisten (merah) yang belum tuntas dibasmi kini bebas tanpa pesaing dan mulai membelah diri dengan cepat.",
+                svg: `
+                    <circle cx="140" cy="85" r="13" fill="#ef4444"/><circle cx="170" cy="105" r="13" fill="#ef4444"/>
+                    <circle cx="135" cy="120" r="13" fill="#ef4444"/><circle cx="165" cy="75" r="12" fill="#ef4444"/>
+                    <circle cx="215" cy="145" r="13" fill="#ef4444"/><circle cx="245" cy="160" r="13" fill="#ef4444"/>
+                    <circle cx="250" cy="130" r="12" fill="#ef4444"/>
+                    <circle cx="80" cy="70" r="10" fill="#38bdf8"/><circle cx="95" cy="145" r="10" fill="#38bdf8"/>
+                    <path d="M155 105 L140 85 M155 105 L170 105 M235 160 L215 145" stroke="#fca5a5" stroke-width="2"/>
+                `
+            },
+            4: {
+                title: "Dominasi 'Superbug' Kebal Antibiotik",
+                desc: "Seluruh koloni kini didominasi bakteri kebal (merah) yang bahkan dapat mentransfer gen kebalnya ke bakteri lain. Antibiotik yang sama tidak lagi mempan mengobati infeksi ini!",
+                svg: `
+                    <circle cx="55" cy="45" r="12" fill="#ef4444"/><circle cx="105" cy="40" r="12" fill="#ef4444"/>
+                    <circle cx="155" cy="50" r="12" fill="#ef4444"/><circle cx="210" cy="45" r="12" fill="#ef4444"/>
+                    <circle cx="260" cy="60" r="12" fill="#ef4444"/><circle cx="50" cy="95" r="12" fill="#ef4444"/>
+                    <circle cx="100" cy="95" r="13" fill="#dc2626" stroke="#ffffff" stroke-width="1.5"/>
+                    <circle cx="155" cy="105" r="13" fill="#dc2626" stroke="#ffffff" stroke-width="1.5"/>
+                    <circle cx="205" cy="95" r="12" fill="#ef4444"/><circle cx="255" cy="115" r="12" fill="#ef4444"/>
+                    <circle cx="70" cy="150" r="12" fill="#ef4444"/><circle cx="125" cy="155" r="12" fill="#ef4444"/>
+                    <circle cx="180" cy="150" r="12" fill="#ef4444"/><circle cx="235" cy="160" r="13" fill="#dc2626" stroke="#ffffff" stroke-width="1.5"/>
+                `
+            }
+        };
+
+        function setAmrStep(step) {
+            // Update tampilan tombol stepper
+            document.querySelectorAll('.amr-step-btn').forEach((btn, idx) => {
+                if (idx + 1 === step) {
+                    btn.className = 'amr-step-btn p-4 rounded-2xl bg-medical-600 border-2 border-sky-400 text-left transition-all shadow-lg';
+                    btn.querySelector('span:first-child').className = 'text-xs font-bold text-sky-200 block';
+                } else {
+                    btn.className = 'amr-step-btn p-4 rounded-2xl bg-white/10 border-2 border-transparent hover:bg-white/15 text-left transition-all';
+                    btn.querySelector('span:first-child').className = 'text-xs font-bold text-slate-400 block';
+                }
+            });
+
+            // Update konten visual & penjelasan
+            const data = amrStepsData[step];
+            document.getElementById('amr-step-badge').textContent = step;
+            document.getElementById('amr-step-title').textContent = data.title;
+            document.getElementById('amr-step-desc').textContent = data.desc;
+            document.getElementById('amr-svg-canvas').innerHTML = data.svg;
+        }
+        // Inisialisasi step 1 saat load
+        setAmrStep(1);
+
+        // 4. TOGGLE KARTU ATURAN EMAS
+        function toggleRuleCard(cardElement) {
+            const detail = cardElement.querySelector('.rule-detail');
+            const icon = cardElement.querySelector('.fa-chevron-down');
+            detail.classList.toggle('hidden');
+            icon.classList.toggle('rotate-180');
+        }
+
+        // 5. CEK MITOS VS FAKTA INTERAKTIF
+        const mythsData = [
+            {
+                statement: "“Antibiotik bisa menyembuhkan flu, pilek, dan batuk agar cepat sembuh.”",
+                isMyth: true,
+                label: "MITOS BESAR!",
+                fact: "Flu dan pilek 90%+ disebabkan oleh VIRUS. Antibiotik hanya membunuh bakteri dan sama sekali tidak mempercepat penyembuhan flu."
+            },
+            {
+                statement: "“Jika badan sudah terasa sehat di hari ke-2, antibiotik boleh dihentikan agar tidak kebanyakan bahan kimia.”",
+                isMyth: true,
+                label: "MITOS BERBAHAYA!",
+                fact: "Berhenti minum antibiotik sebelum habis membiarkan bakteri terkuat tetap hidup dan bermutasi menjadi kebal obat (resisten)."
+            },
+            {
+                statement: "“Antibiotik yang mahal dan dosisnya tinggi selalu lebih ampuh daripada antibiotik generik.”",
+                isMyth: true,
+                label: "MITOS!",
+                fact: "Antibiotik generik maupun bermerek memiliki zat aktif dan efektivitas yang sama. Keampuhan bergantung pada kesesuaian jenis antibiotik dengan bakteri penyebabnya."
+            },
+            {
+                statement: "“Resistensi antibiotik terjadi pada bakterinya, bukan tubuh manusia yang menjadi kebal obat.”",
+                isMyth: false,
+                label: "FAKTA MEDIS!",
+                fact: "Benar! Bakterilah yang berevolusi menjadi kebal. Artinya, siapa pun—bahkan orang yang jarang minum obat—bisa tertular bakteri super kebal tersebut."
+            },
+            {
+                statement: "“Demam tinggi pasti tanda infeksi bakteri dan harus langsung diberi antibiotik.”",
+                isMyth: true,
+                label: "MITOS!",
+                fact: "Demam adalah respons alami sistem imun melawan berbagai infeksi (bisa virus seperti DBD, parasit seperti malaria, atau kelelahan), bukan selalu bakteri."
+            },
+            {
+                statement: "“Mencuci tangan dengan sabun dan melengkapi imunisasi ikut mencegah resistensi antibiotik.”",
+                isMyth: false,
+                label: "FAKTA MEDIS!",
+                fact: "Tepat sekali! Dengan mencegah terjadinya infeksi sejak awal lewat kebersihan dan vaksinasi, kebutuhan penggunaan antibiotik pun menurun drastis."
+            }
+        ];
+
+        function renderMythCards() {
+            const container = document.getElementById('myth-cards-container');
+            container.innerHTML = mythsData.map((item, idx) => `
+                <div class="bg-slate-50 rounded-3xl p-6 border border-slate-200 flex flex-col justify-between shadow-sm hover:shadow-md transition-all">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="px-3 py-1 rounded-full bg-medical-100 text-medical-800 text-xs font-bold">Pernyataan #${idx + 1}</span>
+                            <i class="fa-solid fa-circle-question text-slate-400 text-lg"></i>
+                        </div>
+                        <p class="font-display font-bold text-slate-900 text-base sm:text-lg leading-snug mb-6">
+                            ${item.statement}
+                        </p>
+                    </div>
+
+                    <!-- Tombol Tebak -->
+                    <div id="myth-guess-${idx}" class="grid grid-cols-2 gap-2.5">
+                        <button onclick="revealMyth(${idx}, true)" class="py-2.5 px-3 rounded-xl bg-white border-2 border-red-200 hover:bg-red-50 text-red-700 font-bold text-xs sm:text-sm transition-colors">
+                            <i class="fa-solid fa-xmark mr-1"></i> Ini Mitos
+                        </button>
+                        <button onclick="revealMyth(${idx}, false)" class="py-2.5 px-3 rounded-xl bg-white border-2 border-tealmed-200 hover:bg-tealmed-50 text-tealmed-700 font-bold text-xs sm:text-sm transition-colors">
+                            <i class="fa-solid fa-check mr-1"></i> Ini Fakta
+                        </button>
+                    </div>
+
+                    <!-- Jawaban Fakta Tersembunyi -->
+                    <div id="myth-answer-${idx}" class="hidden mt-2 p-4 rounded-2xl ${item.isMyth ? 'bg-red-50 border border-red-200' : 'bg-tealmed-50 border border-tealmed-200'}">
+                        <div class="flex items-center justify-between mb-1.5">
+                            <span class="font-extrabold text-xs uppercase tracking-wider ${item.isMyth ? 'text-red-700' : 'text-tealmed-700'}">
+                                ${item.label}
+                            </span>
+                            <span id="myth-user-badge-${idx}" class="text-[11px] font-bold px-2 py-0.5 rounded bg-white"></span>
+                        </div>
+                        <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                            ${item.fact}
+                        </p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function revealMyth(index, userGuessedMyth) {
+            const item = mythsData[index];
+            const isCorrect = (userGuessedMyth === item.isMyth);
+            
+            document.getElementById(`myth-guess-${index}`).classList.add('hidden');
+            const answerBox = document.getElementById(`myth-answer-${index}`);
+            const userBadge = document.getElementById(`myth-user-badge-${index}`);
+            
+            answerBox.classList.remove('hidden');
+            if (isCorrect) {
+                userBadge.textContent = "Tebakanmu Tepat!";
+                userBadge.classList.add('text-emerald-700');
+            } else {
+                userBadge.textContent = "Kurang Tepat";
+                userBadge.classList.add('text-amber-700');
+            }
+        }
+        renderMythCards();
+
+        // 6. KALKULATOR JADWAL MINUM OBAT
+        let generatedScheduleText = "";
+
+        function calculateSchedule() {
+            const medName = document.getElementById('med-name').value.trim() || "Antibiotik Resep";
+            const freq = parseInt(document.getElementById('med-freq').value);
+            const startTimeStr = document.getElementById('start-time').value || "07:00";
+
+            const intervalHours = 24 / freq;
+            document.getElementById('schedule-header-title').textContent = `Jadwal Minum Tiap ${intervalHours} Jam (${freq}x Sehari)`;
+
+            const [startHour, startMin] = startTimeStr.split(':').map(Number);
+            const scheduleList = document.getElementById('schedule-list');
+            scheduleList.innerHTML = "";
+            
+            let textLines = [`Jadwal Minum ${medName} (Tiap ${intervalHours} Jam):`];
+
+            for (let i = 0; i < freq; i++) {
+                const totalMinutes = (startHour * 60 + startMin) + (i * intervalHours * 60);
+                const dayOffset = Math.floor(totalMinutes / (24 * 60));
+                const normalizedMinutes = totalMinutes % (24 * 60);
+                
+                const hh = String(Math.floor(normalizedMinutes / 60)).padStart(2, '0');
+                const mm = String(normalizedMinutes % 60).padStart(2, '0');
+                const timeFormatted = `${hh}:${mm}`;
+
+                // Tentukan keterangan waktu
+                let timeOfDay = "Pagi";
+                const hNum = parseInt(hh);
+                if (hNum >= 11 && hNum < 15) timeOfDay = "Siang";
+                else if (hNum >= 15 && hNum < 19) timeOfDay = "Sore";
+                else if (hNum >= 19 || hNum < 4) timeOfDay = "Malam / Dini Hari";
+
+                const dayLabel = dayOffset > 0 ? `<span class="ml-2 px-2 py-0.5 rounded bg-amber-100 text-amber-800 text-[10px] font-bold">Hari Berikutnya</span>` : "";
+
+                textLines.push(`- Dosis ke-${i + 1}: Pukul ${timeFormatted} WIB (${timeOfDay}${dayOffset > 0 ? ' - Hari ke-2' : ''})`);
+
+                scheduleList.innerHTML += `
+                    <div class="flex items-center justify-between p-4 rounded-2xl bg-slate-50 border border-slate-200 hover:border-medical-400 transition-colors">
+                        <div class="flex items-center gap-3.5">
+                            <div class="w-10 h-10 rounded-xl bg-medical-600 text-white font-display font-bold flex items-center justify-center text-sm shadow-sm">
+                                #${i + 1}
+                            </div>
+                            <div>
+                                <p class="font-bold text-slate-900 text-sm sm:text-base flex items-center flex-wrap">
+                                    Dosis ke-${i + 1} ${dayLabel}
+                                </p>
+                                <p class="text-xs text-slate-500">${timeOfDay} • Jarak +${i * intervalHours} jam dari dosis awal</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span class="font-display font-extrabold text-lg sm:text-xl text-medical-700 bg-white px-3.5 py-1.5 rounded-xl border border-slate-200 shadow-xs">
+                                ${timeFormatted}
+                            </span>
+                        </div>
+                    </div>
+                `;
+            }
+
+            generatedScheduleText = textLines.join('\n');
+        }
+
+        function copyScheduleText() {
+            const tempInput = document.createElement('textarea');
+            tempInput.value = generatedScheduleText;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+
+            const toast = document.getElementById('copy-toast');
+            toast.classList.remove('hidden');
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 4000);
+        }
+        // Jalankan kalkulator pertama kali saat halaman dimuat
+        calculateSchedule();
+
+        // 7. KUIS INTERAKTIF 5 STUDI KASUS & SERTIFIKAT
+        const quizQuestions = [
+            {
+                q: "Budi mengalami bersin-bersin, hidung meler, dan demam ringan sejak kemarin akibat kehujanan. Ia berencana membeli Amoxicillin di apotek tanpa resep agar cepat masuk kerja. Tindakan yang paling tepat adalah...",
+                options: [
+                    "Mendukung Budi membeli Amoxicillin karena gejalanya sudah mengganggu aktivitas",
+                    "Menyarankan Budi istirahat cukup, minum air hangat, dan obat pereda gejala karena flu disebabkan virus",
+                    "Memberikan sisa antibiotik milik keluarga di rumah untuk menghemat biaya",
+                    "Membeli antibiotik dengan dosis tertinggi agar virus cepat mati"
+                ],
+                correct: 1,
+                explanation: "Gejala pilek dan bersin-bersin (common cold) disebabkan oleh virus. Antibiotik tidak dapat membunuh virus dan membelinya tanpa resep memicu resistensi antimikroba."
+            },
+            {
+                q: "Dokter meresepkan antibiotik untuk diminum 3 kali sehari selama 5 hari akibat infeksi bakteri. Pada hari ke-3, demam dan nyeri sudah hilang total. Apa yang harus dilakukan pasien?",
+                options: [
+                    "Menghentikan obat segera agar ginjal tidak bekerja terlalu berat",
+                    "Menyimpan sisa obat di kotak P3K untuk berjaga-jaga jika sakit lagi",
+                    "Tetap melanjutkan minum antibiotik hingga habis di hari ke-5 sesuai resep",
+                    "Mengurangi dosis menjadi 1 kali sehari saja"
+                ],
+                correct: 2,
+                explanation: "Hilangnya gejala bukan berarti seluruh bakteri telah musnah. Menghentikan antibiotik sebelum waktunya membuat bakteri yang tersisa bermutasi menjadi kebal."
+            },
+            {
+                q: "Apa arti aturan pakai '3 x 1 kapsul sehari' pada etiket obat antibiotik yang benar?",
+                options: [
+                    "Diminum sekaligus 3 kapsul pada pagi hari",
+                    "Diminum setiap kali selesai makan besar (pagi, siang, malam)",
+                    "Diminum setiap 8 jam sekali (24 jam dibagi 3) agar kadar obat dalam darah stabil",
+                    "Diminum hanya saat badan terasa demam saja"
+                ],
+                correct: 2,
+                explanation: "Interval 8 jam menjaga konsentrasi antibiotik di dalam tubuh selalu efektif menghambat pertumbuhan bakteri sepanjang hari."
+            },
+            {
+                q: "Mengapa kita dilarang keras berbagi antibiotik dengan anggota keluarga lain yang memiliki gejala penyakit serupa?",
+                options: [
+                    "Karena harga antibiotik sangat mahal",
+                    "Karena penyebab infeksi, dosis berdasarkan berat badan, dan kondisi medis tiap orang berbeda",
+                    "Karena antibiotik akan berubah menjadi racun jika dipindah tangankan",
+                    "Karena antibiotik hanya bekerja pada golongan darah yang sama"
+                ],
+                correct: 1,
+                explanation: "Setiap pasien memerlukan evaluasi dokter untuk menentukan jenis antibiotik dan dosis yang tepat sesuai berat badan serta fungsi organ tubuhnya."
+            },
+            {
+                q: "Apa dampak jangka panjang paling berbahaya jika Resistensi Antimikroba (AMR) terus meningkat di masyarakat?",
+                options: [
+                    "Antibiotik akan terasa lebih pahit saat diminum",
+                    "Infeksi bakteri umum seperti radang paru, infeksi luka, atau operasi medis menjadi sulit disembuhkan dan mengancam nyawa",
+                    "Bakteri akan berubah ukuran menjadi sebesar serangga",
+                    "Vaksin tidak lagi diperlukan oleh manusia"
+                ],
+                correct: 1,
+                explanation: "Tanpa antibiotik yang efektif, prosedur medis rutin seperti operasi caesar, kemoterapi, hingga infeksi luka ringan dapat berisiko fatal akibat infeksi bakteri kebal."
+            }
+        ];
+
+        let currentQuestionIdx = 0;
+        let userScore = 0;
+        let userName = "Sahabat Sehat";
+        let hasAnsweredCurrent = false;
+
+        function startQuiz() {
+            const nameInput = document.getElementById('participant-name').value.trim();
+            userName = nameInput || "Duta Kesehatan Masyarakat";
+            currentQuestionIdx = 0;
+            userScore = 0;
+
+            document.getElementById('quiz-start-screen').classList.add('hidden');
+            document.getElementById('quiz-result-screen').classList.add('hidden');
+            document.getElementById('quiz-question-screen').classList.remove('hidden');
+
+            renderQuestion();
+        }
+
+        function renderQuestion() {
+            hasAnsweredCurrent = false;
+            const qData = quizQuestions[currentQuestionIdx];
+            
+            // Update progress
+            document.getElementById('quiz-progress-text').textContent = `Pertanyaan ${currentQuestionIdx + 1} dari ${quizQuestions.length}`;
+            document.getElementById('quiz-score-live').textContent = `Skor: ${userScore}`;
+            document.getElementById('quiz-progress-bar').style.width = `${((currentQuestionIdx + 1) / quizQuestions.length) * 100}%`;
+
+            // Render soal
+            document.getElementById('question-text').textContent = qData.q;
+            
+            // Sembunyikan kotak penjelasan & tombol lanjut
+            const expBox = document.getElementById('explanation-box');
+            expBox.classList.add('hidden');
+            document.getElementById('next-question-btn').classList.add('hidden');
+
+            // Render opsi jawaban
+            const optionsContainer = document.getElementById('options-container');
+            const letters = ['A', 'B', 'C', 'D'];
+            optionsContainer.innerHTML = qData.options.map((opt, idx) => `
+                <button onclick="selectAnswer(${idx})" id="opt-btn-${idx}" class="w-full text-left p-4 rounded-2xl bg-white border-2 border-slate-200 hover:border-medical-500 hover:bg-medical-50/40 transition-all flex items-start gap-3.5 group">
+                    <span class="w-7 h-7 rounded-lg bg-slate-100 group-hover:bg-medical-600 group-hover:text-white text-slate-700 font-bold text-xs flex items-center justify-center shrink-0 mt-0.5 transition-colors">
+                        ${letters[idx]}
+                    </span>
+                    <span class="text-sm sm:text-base text-slate-800 font-medium">${opt}</span>
+                </button>
+            `).join('');
+        }
+
+        function selectAnswer(selectedIdx) {
+            if (hasAnsweredCurrent) return;
+            hasAnsweredCurrent = true;
+
+            const qData = quizQuestions[currentQuestionIdx];
+            const isCorrect = (selectedIdx === qData.correct);
+
+            if (isCorrect) {
+                userScore += 20;
+                document.getElementById('quiz-score-live').textContent = `Skor: ${userScore}`;
+            }
+
+            // Styling tombol jawaban
+            qData.options.forEach((_, idx) => {
+                const btn = document.getElementById(`opt-btn-${idx}`);
+                btn.disabled = true;
+                btn.classList.remove('hover:border-medical-500', 'hover:bg-medical-50/40');
+
+                if (idx === qData.correct) {
+                    btn.className = 'w-full text-left p-4 rounded-2xl bg-emerald-50 border-2 border-emerald-500 flex items-start gap-3.5';
+                    btn.querySelector('span:first-child').className = 'w-7 h-7 rounded-lg bg-emerald-600 text-white font-bold text-xs flex items-center justify-center shrink-0 mt-0.5';
+                } else if (idx === selectedIdx && !isCorrect) {
+                    btn.className = 'w-full text-left p-4 rounded-2xl bg-red-50 border-2 border-red-400 flex items-start gap-3.5';
+                    btn.querySelector('span:first-child').className = 'w-7 h-7 rounded-lg bg-red-600 text-white font-bold text-xs flex items-center justify-center shrink-0 mt-0.5';
+                } else {
+                    btn.classList.add('opacity-60');
+                }
+            });
+
+            // Tampilkan penjelasan medis
+            const expBox = document.getElementById('explanation-box');
+            expBox.classList.remove('hidden');
+            if (isCorrect) {
+                expBox.className = 'p-4 sm:p-5 rounded-2xl mb-6 border bg-emerald-50/80 border-emerald-200 text-emerald-950 text-sm leading-relaxed';
+                expBox.innerHTML = `<p class="font-bold text-emerald-700 mb-1"><i class="fa-solid fa-circle-check mr-1.5"></i>Jawaban Tepat!</p><p>${qData.explanation}</p>`;
+            } else {
+                expBox.className = 'p-4 sm:p-5 rounded-2xl mb-6 border bg-amber-50/90 border-amber-200 text-amber-950 text-sm leading-relaxed';
+                expBox.innerHTML = `<p class="font-bold text-amber-800 mb-1"><i class="fa-solid fa-circle-info mr-1.5"></i>Kurang Tepat — Simak Penjelasannya:</p><p>${qData.explanation}</p>`;
+            }
+
+            // Ubah teks tombol jika soal terakhir
+            const nextBtn = document.getElementById('next-question-btn');
+            nextBtn.classList.remove('hidden');
+            if (currentQuestionIdx === quizQuestions.length - 1) {
+                nextBtn.innerHTML = `Lihat Hasil & Sertifikat <i class="fa-solid fa-award ml-1.5"></i>`;
+            } else {
+                nextBtn.innerHTML = `Pertanyaan Berikutnya <i class="fa-solid fa-arrow-right ml-1.5"></i>`;
+            }
+        }
+
+        function nextQuestion() {
+            currentQuestionIdx++;
+            if (currentQuestionIdx < quizQuestions.length) {
+                renderQuestion();
+            } else {
+                showQuizResult();
+            }
+        }
+
+        function showQuizResult() {
+            document.getElementById('quiz-question-screen').classList.add('hidden');
+            document.getElementById('quiz-result-screen').classList.remove('hidden');
+
+            const passed = userScore >= 80;
+            const resultHeader = document.getElementById('result-header');
+            const certCard = document.getElementById('certificate-card');
+            const printBtn = document.getElementById('print-cert-btn');
+
+            if (passed) {
+                resultHeader.innerHTML = `
+                    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold mb-3">
+                        <i class="fa-solid fa-trophy"></i> LULUS EVALUASI • SKOR ANDA: ${userScore}/100
+                    </div>
+                    <h3 class="font-display font-extrabold text-2xl sm:text-3xl text-slate-900">Selamat, ${userName}!</h3>
+                    <p class="text-slate-600 text-sm sm:text-base mt-1">Anda telah memahami prinsip penggunaan antibiotik yang bijak untuk mencegah AMR.</p>
+                `;
+                
+                // Isi data sertifikat
+                document.getElementById('cert-user-name').textContent = userName;
+                document.getElementById('cert-score').textContent = `${userScore} / 100`;
+                const today = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+                document.getElementById('cert-date').textContent = today;
+
+                certCard.classList.remove('hidden');
+                printBtn.classList.remove('hidden');
+            } else {
+                resultHeader.innerHTML = `
+                    <div class="w-16 h-16 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center text-3xl mx-auto mb-4">
+                        <i class="fa-solid fa-book-open-reader"></i>
+                    </div>
+                    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-100 text-amber-800 text-xs font-bold mb-3">
+                        SKOR ANDA: ${userScore}/100 (Minimal Lulus: 80)
+                    </div>
+                    <h3 class="font-display font-bold text-2xl text-slate-900">Hampir Berhasil, ${userName}!</h3>
+                    <p class="text-slate-600 text-sm sm:text-base max-w-md mx-auto mt-2">
+                        Yuk pelajari kembali modul di atas dan coba ulangi kuis untuk meraih Lencana & Sertifikat Digital Duta Bijak Antibiotik!
+                    </p>
+                `;
+                certCard.classList.add('hidden');
+                printBtn.classList.add('hidden');
+            }
+        }
+
+        function resetQuiz() {
+            document.getElementById('quiz-result-screen').classList.add('hidden');
+            document.getElementById('quiz-start-screen').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
